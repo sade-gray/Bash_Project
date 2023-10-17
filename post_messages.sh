@@ -10,9 +10,18 @@ receiver="$2"
 message="$3"
 
 if [ ! -d "$receiver" ]; then
-  mkdir "$receiver"
-  touch "$receiver/wall.txt"
-  touch "$receiver/friends.txt"
+  echo "Sorry, this friend could not be found"
+  exit 1
+fi
+
+if [ ! -d "$sender" ]; then
+  echo "Sorry, this sender could not be found"
+  exit 1
+fi
+
+if ! grep -q "$sender" "$receiver/friends.txt"; then
+  echo "Sorry, you are not friends, so this message could not be posted"
+  exit 1
 fi
 
 echo "$sender: $message" >> "$receiver/wall.txt"
