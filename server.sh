@@ -13,7 +13,6 @@ while true; do
     "create")
       echo "Please enter the id that you'd like to create"
       read id
-      # Pass the 'id' variable as an argument to create.sh
       bash ./create.sh "$id"
       ;;
     "add")
@@ -21,7 +20,6 @@ while true; do
       read friend1
       echo "Please pass the second argument"
       read friend2
-      # Pass the 'friend1' and 'friend2' variables as arguments to add_friend.sh
       bash ./add_friends.sh "$friend1" "$friend2"
       ;;
     "post")
@@ -31,14 +29,12 @@ while true; do
       read receiver
       echo "Please pass the third argument"
       read message
-      # Pass the 'sender,' 'receiver,' and 'message' variables as arguments to p
 ost_message.sh
       bash ./post_messages.sh "$sender" "$receiver" "$message"
       ;;
     "display")
       echo "Please pass the wall"
       read wall
-      # Pass the 'wall' variable as an argument to display_wall.sh
       bash ./display_walls.sh "$wall"
       ;;
     *)
