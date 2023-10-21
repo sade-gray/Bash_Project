@@ -29,7 +29,6 @@ while true; do
       read receiver
       echo "Please pass the third argument"
       read message
-ost_message.sh
       bash ./post_messages.sh "$sender" "$receiver" "$message"
       ;;
     "display")
