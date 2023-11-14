@@ -1,43 +1,83 @@
 #!/bin/bash
 
+server_pipe="server.pipe"
+if [ ! -p "$server_pipe" ]; then
+    mkfifo "$server_pipe"
+fi
+
 while true; do
-  echo "Please enter an operation or type 'exit' to quit"
-  read operation
+    # Read command from the named pipe
+    read -r command < "$server_pipe"
+    
+    # Extract request type, ID, and arguments
+    request=$(echo "$command" | awk '{print $1}')
+    id=$(echo "$command" | awk '{print $2}')
+    arg1=$(echo "$command" | awk '{print $3}')
+    arg2=$(echo "$command" | awk '{print $4}')
+    message=$(echo "$command" | awk '{for(i=5; i<=NF; i++) printf "%s", $i}')
 
-  if [ "$operation" = "exit" ]; then
-    echo "Exiting the program."
-    break
-  fi
-
-  case "$operation" in
+    # Process requests using case statement
+    echo "$command"
+    case $id in
     "create")
-      echo "Please enter the id that you'd like to create"
-      read id
-      bash ./create.sh "$id"
-      ;;
-    "add")
-      echo "Please pass the first argument"
-      read friend1
-      echo "Please pass the second argument"
-      read friend2
-      bash ./add_friends.sh "$friend1" "$friend2"
-      ;;
-    "post")
-      echo "Please pass the first argument"
-      read sender
-      echo "Please pass the second argument"
-      read receiver
-      echo "Please pass the third argument"
-      read message
-      bash ./post_messages.sh "$sender" "$receiver" "$message"
-      ;;
-    "display")
-      echo "Please pass the wall"
-      read wall
-      bash ./display_walls.sh "$wall"
-      ;;
-    *)
-      echo "Accepted commands: create/add/post/display/exit"
-      ;;
-  esac
+        ./create.sh "$arg1"
+        check=$?
+        if [ "$check" -eq 1 ]; then
+            echo "nok:" > "$arg2.pipe" &
+        else
+            echo "ok:" > "$arg2.pipe" &
+        fi
+        ;;
+        "add")
+   	if ! [ "$arg1" = '' ]; then 
+                ./add_friend.sh "$arg2" "$arg1"
+                check=$?
+                if [ $check -eq 1 ]; then
+                     echo "1" > "$arg2.pipe"
+                elif [ $check -eq 2 ]; then
+                    echo "2" > "$arg2.pipe"
+                elif [ $check -eq 3 ]; then
+                echo "3" > "$arg2.pipe"
+                else
+                    echo "ok:" > "$arg2.pipe"
+                fi
+            else
+               exit 0
+            fi
+            ;;
+        "post")
+           if ! [ "$arg2" = '' ]; then 
+                ./post_messages.sh "$arg2" "$arg1" "$message"
+                check=$?
+                
+                if [ $check -eq 1 ]; then
+                     echo "1" > "$arg2.pipe"
+                elif [ $check -eq 2 ]; then
+                    echo "2" > "$arg2.pipe"
+                elif [ $check -eq 3 ]; then
+                echo "3" > "$arg2.pipe"
+                else
+                    echo "ok:" > "$arg2.pipe"
+                fi
+            else
+               exit 0
+            fi
+            ;;
+        "display")
+           	./display_walls.sh "$arg1"
+           	check=$?
+           	if [ $check -eq 2 ]; then
+                     echo "2" > "$arg2.pipe"
+           	else
+                    echo "ok:" > "$arg2.pipe"
+                fi
+           ;;
+        "exit")
+           echo "Exiting the program."
+           break
+           ;;
+        *)
+            echo "Accepted commands: create/add/post/display/exit" > "$arg2.pipe" &
+            ;;
+    esac
 done
