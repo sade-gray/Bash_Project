@@ -24,7 +24,9 @@ if ! grep -q "$sender" "$receiver/friends.txt"; then
   exit 3
 fi
 
+./acquire.sh $receiver/wall.txt "$receiver"walllock.txt
 echo "$sender: $message" >> "$receiver/wall.txt"
+./release.sh "$receiver"walllock.txt
 
 # echo "Your message has been posted to $receiver's wall"
 exit 0
