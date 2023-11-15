@@ -36,3 +36,4 @@ fi
 
 echo "$friend" >> "$id/friends.txt"
 # echo "friend '$friend' added to the list of friends for user '$id'."
+./release.sh friendslocklock.txt
