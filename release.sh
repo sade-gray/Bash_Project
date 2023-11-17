@@ -3,6 +3,6 @@
 if [ -z "$1" ]; then
 	exit 1
 else
-	rm "$1"
+	sed -i 's/"$1"//' "locks.txt"
 	exit 0
 fi
