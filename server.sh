@@ -37,7 +37,9 @@ while true; do
                 elif [ $check -eq 2 ]; then
                     echo "2" > "$arg2.pipe"
                 elif [ $check -eq 3 ]; then
-                echo "3" > "$arg2.pipe"
+                    echo "3" > "$arg2.pipe"
+                elif [ $check -eq 4 ]; then
+                    echo "4" > "$arg2.pipe"
                 else
                     echo "ok:" > "$arg2.pipe"
                 fi
@@ -56,6 +58,10 @@ while true; do
                     echo "2" > "$arg2.pipe"
                 elif [ $check -eq 3 ]; then
                 echo "3" > "$arg2.pipe"
+                elif [ $check -eq 4 ]; then
+                    echo "4" > "$arg2.pipe"
+                elif [ $check -eq 5 ]; then
+                    echo "4" > "$arg2.pipe"
                 else
                     echo "ok:" > "$arg2.pipe"
                 fi
@@ -68,6 +74,8 @@ while true; do
            	check=$?
            	if [ $check -eq 2 ]; then
                      echo "2" > "$arg2.pipe"
+                elif [ $check -eq 3 ]; then
+                     echo "3" > "$arg2.pipe"
            	else
                     echo "ok:" > "$arg2.pipe"
                 fi
