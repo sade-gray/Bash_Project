@@ -18,7 +18,7 @@ wall="$1"
 if [ ! -d "$wall" ]; then
 #    echo "Error, this person's wall does not exist"
     ./release.sh "display_wall"
-    return 2
+    exit 2
 fi
 
 # more "$wall/wall.txt"
