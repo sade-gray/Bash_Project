@@ -1,12 +1,12 @@
-#! /bin/bash
+#!/bin/bash
 
 if [ -z "$1" ]; then
-	exit 1
-else
-	while ! ln -s "$1" "$2" 2> /dev/null; do
-		echo "$1 locked"
-		sleep 1
-	done
-
-	exit 0
+    exit 1
 fi
+
+if grep -q "$1" "locks.txt"; then
+    exit 2
+fi
+
+echo "$1" >> "locks.txt"
+exit 0
