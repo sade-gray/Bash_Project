@@ -22,5 +22,5 @@ if [ ! -d "$wall" ]; then
 fi
 
 # more "$wall/wall.txt"
-
+./release.sh "display_wall"
 exit 0
